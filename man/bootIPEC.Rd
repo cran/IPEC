@@ -7,8 +7,9 @@ covariance matrices and correlation matrices of parameters
 based on bootstrap replications.
 }
 \usage{
-bootIPEC(expr, x, y, ini.val, target.fun = "RSS", control = list(), nboot = 200, 
-         alpha = 0.05, fig.opt = TRUE, fold = 3.5, seed = NULL, unique.num = 2)
+bootIPEC( expr, x, y, ini.val, target.fun = "RSS", control = list(), 
+          nboot = 200, alpha = 0.05, fig.opt = TRUE, fold = 3.5, 
+          seed = NULL, unique.num = 2, prog.opt = TRUE )
 }
 \arguments{
   \item{expr}{A given parametric model}
@@ -23,11 +24,12 @@ function in package \pkg{stats}}
   \item{alpha}{The significance level for calculating the \code{(1-alpha)*100\%} 
 confidence intervals of parameters}
   \item{fig.opt}{Option of drawing figures of the distributions of bootstrap values of 
-parameters and figures of pairwise comparisons of boostrap values}
+parameters and figures of pairwise comparisons of bootstrap values}
   \item{fold}{Parameter reducing the extreme bootstrap values of parameters}
   \item{seed}{The number to specify a seed for generating a set of random numbers}
   \item{unique.num}{The least number of sampled non-overlapping data points 
 for carrying out a bootstrap nonlinear regression}
+  \item{prog.opt}{Option of showing the running progress of bootstrap}
 }
 \details{
 \code{ini.val} can be a vector or a list that has saved initial values for model parameters, 

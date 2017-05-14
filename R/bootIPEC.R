@@ -1,10 +1,11 @@
 bootIPEC <-
 function( expr, x, y, ini.val, target.fun = "RSS", 
-                  control=list(), nboot=200, alpha=0.05, fig.opt=TRUE, fold=3.5, seed=NULL, unique.num = 2){
+                  control=list(), nboot=200, alpha=0.05, fig.opt=TRUE, fold=3.5, 
+                  seed=NULL, unique.num=2, prog.opt=TRUE){
 
   x       <- rbind( x )
   y       <- as.vector(y)
-  if( min(dim(x))[1] ==1 )    x <- cbind( x )
+  if( min(dim(x))[1] == 1 )   x <- cbind( x )
   if( nrow(x) != length(y) )  x <- t(x)
   ini.val <- as.list(ini.val) 
   res1    <- fitIPEC(expr, x, y, ini.val, target.fun, control, fig.opt=FALSE)
@@ -17,20 +18,22 @@ function( expr, x, y, ini.val, target.fun = "RSS",
   }
   OldSeed <- set.seed(seed)
   for(i in 1L:nboot){
-    # Sys.sleep(0.0005)
-    # cat(i, paste(" of ", nboot, "\r", sep = ""))
-    # flush.console()
-    if(i %% 50 == 0){
-        print(paste("The current running progress is ", i, "/", nboot, sep=""))
-        cat("\n")
+    if(prog.opt=="TRUE" | prog.opt=="T"){
+        # Sys.sleep(0.0005)
+        # cat(i, paste(" of ", nboot, "\r", sep = ""))
+        # flush.console()
+        if(i %% 50 == 0){
+          print(paste("The current running progress is ", i, "/", nboot, sep=""))
+          cat("\n")
+        }
+        if (i %% nboot == 0)    cat("\n")
     }
-    if (i %% nboot == 0)    cat("\n")
     ind   <- sample( 1:n, n, replace=TRUE )
     xboot <- x[ind, ]
     yboot <- y[ind]
     # To set the permitted least non-overlapped number of 
     #     sampled data points for nonlinear regression
-    if( length( unique(cbind(xboot, rbind(yboot))) ) < unique.num ){
+    if( nrow( unique(cbind(xboot, yboot)) ) < unique.num ){
         M[i,] <- NA
     }
     else{
