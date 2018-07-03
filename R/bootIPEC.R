@@ -49,7 +49,7 @@ function( expr, x, y, ini.val, target.fun = "RSS",
   for(j in 1:ncol(M)){
       v    <- M[, j]
       cl   <- fold * ( quantile(v, 0.75)[[1]] - quantile(v, 0.25)[[1]] )  
-      inde <- c(inde, which( v-median(v) >= cl ))
+      inde <- c(inde, which( abs(v-median(v)) >= cl ))
    }
    inde <- sort( unique(inde) )   
    if(length(inde) > 0){
