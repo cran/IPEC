@@ -69,14 +69,14 @@ threepar <- function(theta, x){
     c  <- theta[3]
     x1 <- x[,1]
     x2 <- x[,2]
-    theta[1]*x1^theta[2]*x2^theta[3]
+    a*x1^b*x2^c
 }
 
-# Define a model y = a*x^b, where a and c are parameters to be estimated    
+# Define a model y = a*x^b, where a and b are parameters to be estimated    
 twopar <- function(theta, x){
     a  <- theta[1]
     b  <- theta[2]
-    theta[1]*x^theta[2]
+    a*x^b
 }
 
 \dontrun{
