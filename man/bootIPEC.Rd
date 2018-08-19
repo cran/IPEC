@@ -76,7 +76,7 @@ Sandhu, H.S., Shi, P., Kuang, X., Xue, F. and Ge, F. (2011) Applications of the 
 insect physiology. \emph{Fla. Entomol.} 94, 1036-1041.
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky
+Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
 }
 \note{
 To obtain reliable confidence intervals of model parameters, more than \strong{2000} 

@@ -19,7 +19,7 @@ We are deeply thankful to Drs. Paul Gilbert and Jinlong Zhang for their invaluab
 during creating this package.
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky
+Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
 
 Maintainer: Peijian Shi <peijianshi@gmail.com>
 }

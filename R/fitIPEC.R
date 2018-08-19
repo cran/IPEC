@@ -55,7 +55,7 @@ function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE,
       if(xlim[1] >= xlim[2]) stop("The first element should be less than the second in 'xlim'")
       x2 <- seq(xlim[1], xlim[2], len=2000)
     }
-    y2 <- expr(res$par, x2) 
+    y2 <- expr(par, x2) 
     if( is.null(ylim) ){
         if( is.null(xlab) & is.null(ylab) )
             plot(x2, y2, cex.lab=1.5, cex.axis=1.5, type="n", xlim=xlim, xlab="x", ylab="y") 
@@ -120,6 +120,6 @@ function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE,
     points(y, yhat, pch=1, cex=1.5, col=2)
   }
 
-  list(expr=expr, mat=mat, par = par, RSS=RSS, chi.sq=chi.sq, R.sq=R.sq)
+  list(expr=expr, mat=mat, par=par, RSS=RSS, chi.sq=chi.sq, R.sq=R.sq, n=length(y))
 
 }

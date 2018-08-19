@@ -39,7 +39,7 @@ Box, M.J. (1971) Bias in nonlinear estimation. \emph{J. R. Statist. Soc., Ser. B
 Ratkowsky, D.A. (1983) \emph{Nonlinear Regression Modeling: A Unified Practical Approach}. Marcel Dekker, New York.
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky
+Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
 }
 \note{
 The current function can be applicable to nonlinear models with multiple independent variables.

@@ -42,7 +42,7 @@ Hougaard, P. (1985) The appropriateness of the asymptotic distribution in a nonl
 Ratkowsky, D.A. (1990) \emph{Handbook of Nonlinear Regression Models}, Marcel Dekker, New York.
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky
+Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
 }
 \note{
 The current function can be applicable to nonlinear models with multiple independent variables.

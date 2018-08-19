@@ -49,13 +49,14 @@ input argument of \code{start} of \code{\link{nls}} in package \pkg{stats}.
   \item{RSS}{Calculated residual sum of squares}
   \item{chi.sq}{Calculated \eqn{\chi^2}}
   \item{R.sq}{Calculated \eqn{R^2}}
+  \item{n}{The number of data points, namely the sample size}
 }
 \references{
 Nelder, J.A. and Mead, R. (1965) A simplex algorithm for function minimization. 
 \emph{Comput. J.} 7, 308-313.
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky
+Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
 }
 \note{
 This function can be applicable to a nonlinear parametric model with 

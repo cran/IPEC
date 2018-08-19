@@ -50,7 +50,7 @@ Ratkowsky, D.A. (1983) \emph{Nonlinear Regression Modeling: A Unified Practical 
 Ratkowsky, D.A. (1990) \emph{Handbook of Nonlinear Regression Models}, Marcel Dekker, New York.
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky
+Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
 }
 \note{The calculation precision of curvature mainly depends on the setting of \code{method.args}. 
 The two important default values in the list of \code{method.args} are \code{d = 0.11}, and \code{r = 6}.

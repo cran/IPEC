@@ -37,7 +37,7 @@ Ratkowsky, D.A. (1983) \emph{Nonlinear Regression Modeling: A Unified Practical 
 Ratkowsky, D.A. (1990) \emph{Handbook of Nonlinear Regression Models}, Marcel Dekker, New York.
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky
+Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
 }
 \seealso{
 \code{\link{biasIPEC}}, \code{\link{skewIPEC}}, \code{\link{curvIPEC}}, 
