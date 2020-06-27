@@ -4,7 +4,7 @@ function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE,
 
   x <- rbind( x )
   y <- as.vector(y)
-  if( min(dim(x))[1] ==1 )    x <- cbind( x )
+  if( min(dim(x))[1] == 1 )   x <- cbind( x )
   if( nrow(x) != length(y) )  x <- t(x)
 
   object.fun <- function(P){

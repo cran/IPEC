@@ -1,7 +1,7 @@
 \name{isom}
 \alias{isom}
 \title{
-Data on biochemical oxygen demand
+Data on Biochemical Oxygen Demand
 }
 \description{
 Data on the reaction rate of the catalytic isomerization of \emph{n}-pentane to isopentane 

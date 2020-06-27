@@ -1,8 +1,8 @@
 bootIPEC <-
 function( expr, x, y, ini.val, target.fun = "RSS", 
-                  control=list(), nboot=200, alpha=0.05, fig.opt=TRUE, fold=3.5, 
+                  control=list(), nboot=200, CI=0.95, fig.opt=TRUE, fold=3.5, 
                   seed=NULL, unique.num=2, prog.opt=TRUE){
-
+  alpha   <- 1 - CI
   x       <- rbind( x )
   y       <- as.vector(y)
   if( min(dim(x))[1] == 1 )   x <- cbind( x )
@@ -66,8 +66,8 @@ function( expr, x, y, ini.val, target.fun = "RSS",
   
   for(j in 1:p){
     z                <- M[,j]
-    lower            <- quantile(z, c(alpha, 1 - alpha))[[1]]
-    upper            <- quantile(z, c(alpha, 1 - alpha))[[2]]
+    lower            <- quantile(z, c(alpha/2, 1 - alpha/2))[[1]]
+    upper            <- quantile(z, c(alpha/2, 1 - alpha/2))[[2]]
     perc.ci.mat[j, ] <- c(res1$par[j], sd(z), median(z), mean(z), lower, upper)  
 
     if( fig.opt=="TRUE" | fig.opt=="T" ){    

@@ -71,7 +71,7 @@ res3
 \dontrun{
   res4 <- bootIPEC( MM, x=x1, y=y1, ini.val=par1, target.fun = "RSS", 
                     control=list(reltol=1e-20, maxit=40000), 
-                    nboot=2000, alpha=0.05, fig.opt=TRUE, seed=123 )
+                    nboot=2000, CI=0.95, fig.opt=TRUE, seed=123 )
   res4
 }
 
@@ -146,7 +146,7 @@ resu3 <- biasIPEC(myfun, theta=par2, x=x2, y=y2, tol= 1e-20)
 resu3
 
 resu4 <- bootIPEC( myfun, x=x2, y=y2, ini.val=ini.val1, target.fun = "RSS", 
-                   nboot=2000, alpha=0.05, fig.opt=TRUE, seed=123 )
+                   nboot=2000, CI=0.95, fig.opt=TRUE, seed=123 )
 resu4
 
 # To calculate skewness
@@ -237,7 +237,7 @@ re3
 \dontrun{
   re4 <- bootIPEC( bsm, x=x3, y=y3, ini.val=ini.val2, target.fun = "RSS", 
                    control=list(trace=FALSE, reltol=1e-20, maxit=50000),
-                   nboot=2000, alpha=0.05, fig.opt=TRUE, fold=3.5, seed=123 )
+                   nboot=2000, CI=0.95, fig.opt=TRUE, fold=3.5, seed=123 )
   re4
 }
 
@@ -270,7 +270,7 @@ RESU3
 \dontrun{
   RESU4 <- bootIPEC( simp.bsm, x=x3, y=y3, ini.val=ini.val7, target.fun = "RSS", 
                      control=list(trace=FALSE, reltol=1e-20, maxit=50000),
-                     nboot=2000, alpha=0.05, fig.opt=TRUE, fold=3.5, seed=123 )
+                     nboot=2000, CI=0.95, fig.opt=TRUE, fold=3.5, seed=123 )
   RESU4
 }
 
@@ -322,7 +322,7 @@ cons3
 \dontrun{
   cons4 <- bootIPEC( isom.fun, x=X, y=Y, ini.val=ini.val8, target.fun = "RSS", 
                      control=list(trace=FALSE, reltol=1e-20, maxit=50000),
-                     nboot=2000, alpha=0.05, fig.opt=TRUE, fold=10000, seed=123 )
+                     nboot=2000, CI=0.95, fig.opt=TRUE, fold=10000, seed=123 )
   cons4
 }
 

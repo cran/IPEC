@@ -1,7 +1,7 @@
 \name{aic}
 \alias{aic}
 \title{
-Akaike Information Criterion (AIC)
+Akaike Information Criterion (AIC) Calculation Function
 }
 \description{
 Calculates the AIC value(s) of the object(s) obtained from 

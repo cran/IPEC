@@ -1,7 +1,7 @@
 \name{bic}
 \alias{bic}
 \title{
-Bayesian Information Criterion (BIC)
+Bayesian Information Criterion (BIC) Calculation Function
 }
 \description{
 Calculates the BIC value(s) of the object(s) obtained from 

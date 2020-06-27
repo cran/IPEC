@@ -11,9 +11,8 @@ collected in Southern China from July to September, 2016.
 data(leaves)
 }
 \details{
-In the data set, there are five variables: \code{PopuCode}, \code{LeafCode}, \code{Length}, \code{Width} and \code{Area}. 
+In the data set, there are four variables: \code{PopuCode}, \code{Length}, \code{Width} and \code{Area}. 
 \code{PopuCode} is used to save the number codes of different geographical populations; 
-\code{LeafCode} is used to save the number codes of the leaves of a geographical population; 
 \code{Length} is used to save the scanned leaf length data (cm);
 \code{Width} is used to save the scanned leaf width data (cm);   
 \code{Area} is used to save the scanned leaf area data (cm squared). 

@@ -8,7 +8,7 @@ based on bootstrap replications.
 }
 \usage{
 bootIPEC( expr, x, y, ini.val, target.fun = "RSS", control = list(), 
-          nboot = 200, alpha = 0.05, fig.opt = TRUE, fold = 3.5, 
+          nboot = 200, CI = 0.95, fig.opt = TRUE, fold = 3.5, 
           seed = NULL, unique.num = 2, prog.opt = TRUE )
 }
 \arguments{
@@ -21,8 +21,7 @@ for the optimization}
   \item{control}{A list of control parameters for using the \code{\link{optim}} 
 function in package \pkg{stats}}
   \item{nboot}{The number of bootstrap replications}
-  \item{alpha}{The significance level for calculating the \code{(1-alpha)*100\%} 
-confidence intervals of parameters}
+  \item{CI}{The confidence level(s) of the required interval(s)}
   \item{fig.opt}{Option of drawing figures of the distributions of bootstrap values of 
 parameters and figures of pairwise comparisons of bootstrap values}
   \item{fold}{Parameter reducing the extreme bootstrap values of parameters}
@@ -40,7 +39,7 @@ e.g. \code{y = beta0 + beta1 * x + beta2 * x^2},
 beta2=seq(0.01, 0.05, len=5))}, which is similar to the usage of the 
 input argument of \code{start} of \code{\link{nls}} in package \pkg{stats}. 
 
-\code{alpha} determines the confidence intervals of parameters, each \code{(1-alpha)*100\%}. 
+\code{CI} determines the width of confidence intervals. 
 
 \code{fold} is used to delete the data whose differences from the median exceed 
 a certain \code{fold} of the difference between 3/4 and 1/4 quantiles of the 
@@ -108,7 +107,7 @@ MM <- function(theta, x){
 
 \dontrun{
   res4 <- bootIPEC( MM, x=x1, y=y1, ini.val=c(200, 0.05), target.fun = "RSS", 
-                    control=list(reltol=1e-20, maxit=40000), nboot=2000, alpha=0.05, 
+                    control=list(reltol=1e-20, maxit=40000), nboot=2000, CI=0.95, 
                     fig.opt=TRUE, seed=123 )
   res4
 }
@@ -156,7 +155,7 @@ sqrt.LRF <- function(P, x){
 myfun <- sqrt.LRF
 \dontrun{
   resu4 <- bootIPEC( myfun, x=x2, y=y2, ini.val=ini.val1, target.fun="RSS", 
-                     nboot=2000, alpha=0.05, fig.opt=TRUE, seed=123 )
+                     nboot=2000, CI=0.95, fig.opt=TRUE, seed=123 )
   resu4
 }
 #################################################################################################
@@ -224,7 +223,7 @@ ylab2    <- "Height (cm)"
 \dontrun{
   re4 <- bootIPEC( bsm, x=x3, y=y3, ini.val=ini.val2, target.fun = "RSS", 
                    control=list(trace=FALSE, reltol=1e-20, maxit=50000),
-                   nboot=2000, alpha=0.05, fig.opt=TRUE, fold=10, seed=123 )
+                   nboot=2000, CI=0.95, fig.opt=TRUE, fold=10, seed=123 )
   re4
 }
 
@@ -234,7 +233,7 @@ ini.val7 <- c(40, 30, 50)
 \dontrun{
   RESU4 <- bootIPEC( simp.bsm, x=x3, y=y3, ini.val=ini.val7, target.fun = "RSS", 
                      control=list(trace=FALSE, reltol=1e-20, maxit=50000),
-                     nboot=2000, alpha=0.05, fig.opt=TRUE, fold=10, seed=123 )
+                     nboot=2000, CI=0.95, fig.opt=TRUE, fold=10, seed=123 )
   RESU4
 }
 #################################################################################################
@@ -283,12 +282,12 @@ MitC <- function(P3, x, x1=1, x2=13){
 \dontrun{
   ini.val3 <- c(-0.1, 2.5, 1.0)
   r4       <- bootIPEC( MitA, x=x4, y=y4, ini.val=ini.val3, target.fun="RSS", 
-                        nboot=2000, alpha=0.05, fig.opt=TRUE, seed=123 )
+                        nboot=2000, CI=0.95, fig.opt=TRUE, seed=123 )
   r4
 
   ini.val4 <- c(exp(-0.1), log(2.5), 1)
   R4       <- bootIPEC( MitB, x=x4, y=y4, ini.val=ini.val4, target.fun="RSS", 
-                        nboot=2000, alpha=0.05, fig.opt=TRUE, seed=123 )
+                        nboot=2000, CI=0.95, fig.opt=TRUE, seed=123 )
   R4
 
   # ini.val6 <- c(-0.15, 2.52, 1.09)
@@ -298,7 +297,7 @@ MitC <- function(P3, x, x1=1, x2=13){
   RES0$par
   RES4 <- bootIPEC( MitC, x=x4, y=y4, ini.val=iv.list2, target.fun="RSS", 
                     control=list(trace=FALSE, reltol=1e-10, maxit=5000), 
-                    nboot=5000, alpha=0.05, fig.opt=TRUE, fold=3.5, seed=123, unique.num=2 )
+                    nboot=5000, CI=0.95, fig.opt=TRUE, fold=3.5, seed=123, unique.num=2 )
   RES4
 }
 #################################################################################################
