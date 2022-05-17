@@ -26,9 +26,10 @@ There were errors about the definitions of 'x2' and 'x3' in page 272 in Bates an
 Here, we redefined them according to the paper of Carr (1960).
 }
 \references{
-Bates, D.M and Watts, D.G. (1988) \emph{Nonlinear Regression Analysis and its Applications}. Wiley, New York.
+Bates, D.M and Watts, D.G. (1988) \emph{Nonlinear Regression Analysis and its Applications}. Wiley, New York. 
+\doi{10.1002/9780470316757}
 
-Carr, N.L. (1960) Kinetics of catalytic isomerization of \emph{n}-pentane. \emph{Ind. Eng. Chem.} 52, 391-396. 
+Carr, N.L. (1960) Kinetics of catalytic isomerization of \emph{n}-pentane. \emph{Ind. Eng. Chem.} 52, 391\eqn{-}396. 
 }
 \examples{
 data(isom)

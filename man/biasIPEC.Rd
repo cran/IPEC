@@ -34,12 +34,14 @@ An absolute value of \code{percent.bias} (see below) in excess of \strong{1\%} a
   \item{percent.bias}{Calculated percentage bias that is equal to \code{bias/estimate * 100\%}}
 }
 \references{
-Box, M.J. (1971) Bias in nonlinear estimation. \emph{J. R. Statist. Soc., Ser. B} 33, 171-201.
+Box, M.J. (1971) Bias in nonlinear estimation. \emph{J. R. Statist. Soc., Ser. B} 33, 171\eqn{-}201. 
+\doi{10.1111/j.2517-6161.1971.tb00871.x}
 
 Ratkowsky, D.A. (1983) \emph{Nonlinear Regression Modeling: A Unified Practical Approach}. Marcel Dekker, New York.
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
+Peijian Shi \email{pjshi@njfu.edu.cn}, Peter M. Ridland \email{p.ridland@unimelb.edu.au}, 
+David A. Ratkowsky \email{d.ratkowsky@utas.edu.au}, Yang Li \email{yangli@fau.edu}.
 }
 \note{
 The current function can be applicable to nonlinear models with multiple independent variables.
@@ -72,7 +74,7 @@ res3
 #   Ratkowsky, D.A. and Reddy, G.V.P. (2017) Empirical model with excellent statistical 
 #       properties for describing temperature-dependent developmental rates of insects  
 #       and mites. Ann. Entomol. Soc. Am. 110, 302-309.
-#   Wu, K.-J., Gong, P.-Y. and Ruan, Y.-M. (2009) Estimating developmental rates of 
+#   Wu, K., Gong, P. and Ruan, Y. (2009) Estimating developmental rates of 
 #       Helicoverpa armigera (Lepidoptera: Noctuidae) pupae at constant and
 #       alternating temperature by nonlinear models. Acta Entomol. Sin. 52, 640-650.
 

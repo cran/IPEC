@@ -9,14 +9,14 @@ based on bootstrap replications.
 \usage{
 bootIPEC( expr, x, y, ini.val, target.fun = "RSS", control = list(), 
           nboot = 200, CI = 0.95, fig.opt = TRUE, fold = 3.5, 
-          seed = NULL, unique.num = 2, prog.opt = TRUE )
+          unique.num = 2, prog.opt = TRUE )
 }
 \arguments{
   \item{expr}{A given parametric model}
   \item{x}{Vector or matrix of observations of independent variable(s)}
   \item{y}{Vector of observations of response variable}
   \item{ini.val}{A vector or list of initial values of model parameters}
-  \item{target.fun}{Objective function, \dQuote{RSS} and \dQuote{chi.sq}, 
+  \item{target.fun}{The objective function, \dQuote{RSS} or \dQuote{MRE}, 
 for the optimization}
   \item{control}{A list of control parameters for using the \code{\link{optim}} 
 function in package \pkg{stats}}
@@ -25,7 +25,6 @@ function in package \pkg{stats}}
   \item{fig.opt}{Option of drawing figures of the distributions of bootstrap values of 
 parameters and figures of pairwise comparisons of bootstrap values}
   \item{fold}{Parameter reducing the extreme bootstrap values of parameters}
-  \item{seed}{The number to specify a seed for generating a set of random numbers}
   \item{unique.num}{The least number of sampled non-overlapping data points 
 for carrying out a bootstrap nonlinear regression}
   \item{prog.opt}{Option of showing the running progress of bootstrap}
@@ -39,15 +38,18 @@ e.g. \code{y = beta0 + beta1 * x + beta2 * x^2},
 beta2=seq(0.01, 0.05, len=5))}, which is similar to the usage of the 
 input argument of \code{start} of \code{\link{nls}} in package \pkg{stats}. 
 
+In the \code{target.fun} argument option, RSS represents the residual sum of squares 
+between the observed and predicted \eqn{y} values, i.e. 
+\deqn{\mbox{RSS} = \sum_{i=1}^{N}\left(y_i-\hat{y}_i\right)^{2}}
+where \eqn{y_i} and \eqn{\hat{y}_i} represent the observed and predicted \eqn{y} values, respectively; 
+and \eqn{N} represents the sample size. MRE represents the mean relative error  between the observed and predicted \eqn{y} values, i.e. 
+\deqn{\mbox{MRE} = \frac{\sum_{i=1}^{N}\left|\frac{y_i-\hat{y}_i}{\hat{y}_i}\right|}{N}}
+
 \code{CI} determines the width of confidence intervals. 
 
 \code{fold} is used to delete the data whose differences from the median exceed 
 a certain \code{fold} of the difference between 3/4 and 1/4 quantiles of the 
 bootstrap values of a model parameter. 
-
-\code{seed} is used in the \code{\link{set.seed}} function in package \pkg{base}. 
-If \code{seed} is assigned to be a specific integer, the users can obtain the same bootstrap values 
-(standard deviation, median, mean, confidence interval) for repeating this function. 
 
 The default of \code{unique.num} is 2. That is, at least two non-overlapping data 
 points randomly sampled from \code{(x,y)} are needed for carrying out 
@@ -69,13 +71,14 @@ values when \code{nboot > 1}}
 }
 \references{
 Efron, B. and Tibshirani, R.J. (1993) \emph{An Introduction to the Bootstrap}. 
-Chapman and Hall (CRC), New York.
+Chapman and Hall (CRC), New York. \doi{10.2307/2532810}
 
 Sandhu, H.S., Shi, P., Kuang, X., Xue, F. and Ge, F. (2011) Applications of the bootstrap to 
-insect physiology. \emph{Fla. Entomol.} 94, 1036-1041.
+insect physiology. \emph{Fla. Entomol.} 94, 1036\eqn{-}1041. \doi{10.1653/024.094.0442}
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
+Peijian Shi \email{pjshi@njfu.edu.cn}, Peter M. Ridland \email{p.ridland@unimelb.edu.au}, 
+David A. Ratkowsky \email{d.ratkowsky@utas.edu.au}, Yang Li \email{yangli@fau.edu}.
 }
 \note{
 To obtain reliable confidence intervals of model parameters, more than \strong{2000} 
@@ -105,11 +108,13 @@ MM <- function(theta, x){
     theta[1]*x / ( theta[2] + x )    
 }
 
-\dontrun{
+\donttest{
+  set.seed(123)
   res4 <- bootIPEC( MM, x=x1, y=y1, ini.val=c(200, 0.05), target.fun = "RSS", 
                     control=list(reltol=1e-20, maxit=40000), nboot=2000, CI=0.95, 
-                    fig.opt=TRUE, seed=123 )
+                    fig.opt=TRUE )
   res4
+  set.seed(NULL)
 }
 #################################################################################################
 
@@ -121,7 +126,7 @@ graphics.off()
 #   Ratkowsky, D.A. and Reddy, G.V.P. (2017) Empirical model with excellent statistical 
 #       properties for describing temperature-dependent developmental rates of insects  
 #       and mites. Ann. Entomol. Soc. Am. 110, 302-309.
-#   Wu, K.-J., Gong, P.-Y. and Ruan, Y.-M. (2009) Estimating developmental rates of 
+#   Wu, K., Gong, P. and Ruan, Y. (2009) Estimating developmental rates of 
 #       Helicoverpa armigera (Lepidoptera: Noctuidae) pupae at constant and
 #       alternating temperature by nonlinear models. Acta Entomol. Sin. 52, 640-650.
 
@@ -153,33 +158,34 @@ sqrt.LRF <- function(P, x){
 }
 
 myfun <- sqrt.LRF
-\dontrun{
+\donttest{
+  set.seed(123)
   resu4 <- bootIPEC( myfun, x=x2, y=y2, ini.val=ini.val1, target.fun="RSS", 
-                     nboot=2000, CI=0.95, fig.opt=TRUE, seed=123 )
+                     nboot=2000, CI=0.95, fig.opt=TRUE )
   resu4
+  set.seed(NULL)
 }
 #################################################################################################
 
 
 #### Example 3 ##################################################################################
 graphics.off()
-# Height growth data of four species of bamboos (Gramineae: Bambusoideae)
+# Height growth data of four species of bamboo (Gramineae: Bambusoideae)
 # Reference(s):
-# Shi, P.-J., Fan, M.-L., Ratkowsky, D.A., Huang, J.-G., Wu, H.-I, Chen, L., Fang, S.-Y. and  
-#     Zhang, C.-X. (2017) Comparison of two ontogenetic growth equations for animals and plants. 
+# Shi, P., Fan, M., Ratkowsky, D.A., Huang, J., Wu, H., Chen, L., Fang, S. and  
+#     Zhang, C. (2017) Comparison of two ontogenetic growth equations for animals and plants. 
 #     Ecol. Model. 349, 1-10.
 
 data(shoots)
-attach(shoots)
 # Choose a species
 # 1: Phyllostachys iridescens; 2: Phyllostachys mannii; 
-# 3: Sinobambusa tootsik; 4: Pleioblastus maculatus
+# 3: Pleioblastus maculatus; 4: Sinobambusa tootsik.
 # 'x3' is the vector of the observation times from a specific starting time of growth
 # 'y3' is the vector of the aboveground height values of bamboo shoots at 'x3' 
 
-ind <- 2
-x3  <- time[code == ind]
-y3  <- height[code == ind] 
+ind <- 4
+x3  <- shoots$x[shoots$Code == ind]
+y3  <- shoots$y[shoots$Code == ind] 
 
 # Define the beta sigmoid model (bsm)
 bsm <- function(P, x){
@@ -220,21 +226,25 @@ ini.val2 <- c(40, 30, 5, 50)
 xlab2    <- "Time (d)"
 ylab2    <- "Height (cm)"
 
-\dontrun{
+\donttest{
+  set.seed(123)
   re4 <- bootIPEC( bsm, x=x3, y=y3, ini.val=ini.val2, target.fun = "RSS", 
                    control=list(trace=FALSE, reltol=1e-20, maxit=50000),
-                   nboot=2000, CI=0.95, fig.opt=TRUE, fold=10, seed=123 )
+                   nboot=2000, CI=0.95, fig.opt=TRUE, fold=10 )
   re4
+  set.seed(NULL)
 }
 
 # For the simplified beta sigmoid model (in comparison with the original beta sigmoid model)
 ini.val7 <- c(40, 30, 50)
 
-\dontrun{
+\donttest{
+  set.seed(123)
   RESU4 <- bootIPEC( simp.bsm, x=x3, y=y3, ini.val=ini.val7, target.fun = "RSS", 
                      control=list(trace=FALSE, reltol=1e-20, maxit=50000),
-                     nboot=2000, CI=0.95, fig.opt=TRUE, fold=10, seed=123 )
+                     nboot=2000, CI=0.95, fig.opt=TRUE, fold=10 )
   RESU4
+  set.seed(NULL)
 }
 #################################################################################################
 
@@ -279,15 +289,16 @@ MitC <- function(P3, x, x1=1, x2=13){
     theta3 + theta2*exp(theta1*x)
 }
 
-\dontrun{
+\donttest{
+  set.seed(123)
   ini.val3 <- c(-0.1, 2.5, 1.0)
   r4       <- bootIPEC( MitA, x=x4, y=y4, ini.val=ini.val3, target.fun="RSS", 
-                        nboot=2000, CI=0.95, fig.opt=TRUE, seed=123 )
+                        nboot=2000, CI=0.95, fig.opt=TRUE )
   r4
 
   ini.val4 <- c(exp(-0.1), log(2.5), 1)
   R4       <- bootIPEC( MitB, x=x4, y=y4, ini.val=ini.val4, target.fun="RSS", 
-                        nboot=2000, CI=0.95, fig.opt=TRUE, seed=123 )
+                        nboot=2000, CI=0.95, fig.opt=TRUE )
   R4
 
   # ini.val6 <- c(-0.15, 2.52, 1.09)
@@ -297,8 +308,9 @@ MitC <- function(P3, x, x1=1, x2=13){
   RES0$par
   RES4 <- bootIPEC( MitC, x=x4, y=y4, ini.val=iv.list2, target.fun="RSS", 
                     control=list(trace=FALSE, reltol=1e-10, maxit=5000), 
-                    nboot=5000, CI=0.95, fig.opt=TRUE, fold=3.5, seed=123, unique.num=2 )
+                    nboot=5000, CI=0.95, fig.opt=TRUE, fold=3.5, unique.num=2 )
   RES4
+  set.seed(NULL)
 }
 #################################################################################################
 }

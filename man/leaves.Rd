@@ -19,7 +19,7 @@ In the data set, there are four variables: \code{PopuCode}, \code{Length}, \code
 }
 \references{
 Wang, P., Ratkowsky, D.A., Xiao, X., Yu, X., Su, J., Zhang, L. and Shi, P. 
-(2018) Taylor's power law for leaf bilateral symmetry. \emph{Forests} 9, 500. doi: 10.3390/f9080500 
+(2018) Taylor's power law for leaf bilateral symmetry. \emph{Forests} 9, 500. \doi{10.3390/f9080500} 
 }
 \examples{
 data(leaves)
@@ -37,7 +37,6 @@ summary(fit)
 
 # Show the leaf areas of the 10 geographical populations
 dev.new()
-par(mar=c(5,6,2,2))
 boxplot(Area~PopuCode, cex=1.5, cex.lab=1.5, cex.axis=1.5, 
         col="grey70", xlab=expression(bold("Population code")), 
         ylab=expression(bold(paste("Leaf area (cm", ""^{"2"}, ")", sep=""))),

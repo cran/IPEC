@@ -1,7 +1,7 @@
 bootIPEC <-
 function( expr, x, y, ini.val, target.fun = "RSS", 
-                  control=list(), nboot=200, CI=0.95, fig.opt=TRUE, fold=3.5, 
-                  seed=NULL, unique.num=2, prog.opt=TRUE){
+          control=list(), nboot=200, CI=0.95, fig.opt=TRUE, fold=3.5, 
+          unique.num=2, prog.opt=TRUE){
   alpha   <- 1 - CI
   x       <- rbind( x )
   y       <- as.vector(y)
@@ -11,12 +11,8 @@ function( expr, x, y, ini.val, target.fun = "RSS",
   res1    <- fitIPEC(expr, x, y, ini.val, target.fun, control, fig.opt=FALSE)
   n       <- nrow(x)
   p       <- length(ini.val)
-  M0      <- c(res1$par, res1$RSS, res1$chi.sq, res1$R.sq)
+  M0      <- c(res1$par, res1$RSS, res1$MRE, res1$R.sq)
   M       <- matrix( NA, nrow=nboot, ncol=(p+3) )
-  if(!is.null(seed)){
-      if(!is.numeric(seed)) stop("'seed' should be an integer")
-  }
-  OldSeed <- set.seed(seed)
   for(i in 1L:nboot){
     if(prog.opt=="TRUE" | prog.opt=="T"){
         # Sys.sleep(0.0005)
@@ -39,7 +35,7 @@ function( expr, x, y, ini.val, target.fun = "RSS",
     else{
         res2  <- fitIPEC( expr, xboot, yboot, ini.val=res1$par, target.fun=target.fun, 
                           control=control, fig.opt=FALSE ) 
-        M[i,] <- c(res2$par, res2$RSS, res2$chi.sq, res2$R.sq)
+        M[i,] <- c(res2$par, res2$RSS, res2$MRE, res2$R.sq)
     }   
   }
   M <- na.omit(M)
@@ -72,7 +68,6 @@ function( expr, x, y, ini.val, target.fun = "RSS",
 
     if( fig.opt=="TRUE" | fig.opt=="T" ){    
       dev.new()
-      par(mar=c(5, 5, 2, 2))      
       z.int   <- ( max(z)[1] - min(z)[1] )/10
       z.range <- seq( min(z)[1]-z.int, max(z)[1]+z.int, len=2000 )
       den     <- dnorm(z.range, mean=mean(z), sd=sd(z))
@@ -98,7 +93,6 @@ function( expr, x, y, ini.val, target.fun = "RSS",
         cor.mat[i, j]   <- cor(z1, z2)
         if(j > i & fig.opt=="TRUE" | fig.opt=="T"){           
           dev.new()
-          par(mar=c(5, 5, 2, 2))
           plot( z1, z2, pch=1, cex=1.5, cex.lab=1.5, cex.axis=1.5,
               xlab=eval(e1), ylab=eval(e2) )
           abline(v=res1$par[i], lty=2, col=3)
@@ -114,7 +108,7 @@ function( expr, x, y, ini.val, target.fun = "RSS",
   }
   rownames(perc.ci.mat) <- Names
   colnames(perc.ci.mat) <- c("Estimate", "SD", "Median", "Mean", "perc LCI", "perc UCI")
-  colnames(M)           <- c(Names, "RSS", "chi.sq", "R.sq") 
+  colnames(M)           <- c(Names, "RSS", "MRE", "R.sq") 
 
   # Calculate the lower and upper limits of confidence intervals based on the BCa method
   number <- 0
@@ -158,6 +152,5 @@ function( expr, x, y, ini.val, target.fun = "RSS",
   if(nboot == 1){
       covar.mat <- NA; cor.mat <- NA
   }
-  on.exit( set.seed(OldSeed) )
   list(M=M, perc.ci.mat=perc.ci.mat, bca.ci.mat=bca.ci.mat, covar.mat=covar.mat, cor.mat=cor.mat)
 }

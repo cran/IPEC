@@ -40,7 +40,7 @@ function in the current package, and it also can be obtained using the other non
   \item{critical.c}{Critical curvature value}
 }
 \references{
-Bates, D.M and Watts, D.G. (1988) \emph{Nonlinear Regression Analysis and its Applications}. Wiley, New York.
+Bates, D.M and Watts, D.G. (1988) \emph{Nonlinear Regression Analysis and its Applications}. Wiley, New York. \doi{10.1002/9780470316757}
 
 Gebremariam, B. (2014) Is nonlinear regression throwing you a curve? New diagnostic and inference tools in the NLIN Procedure. 
 Paper SAS384-2014. \url{http://support.sas.com/resources/papers/proceedings14/SAS384-2014.pdf}
@@ -48,9 +48,13 @@ Paper SAS384-2014. \url{http://support.sas.com/resources/papers/proceedings14/SA
 Ratkowsky, D.A. (1983) \emph{Nonlinear Regression Modeling: A Unified Practical Approach}. Marcel Dekker, New York.
 
 Ratkowsky, D.A. (1990) \emph{Handbook of Nonlinear Regression Models}, Marcel Dekker, New York.
+
+Ratkowsky, D.A. & Reddy, G.V.P. (2017) Empirical model with excellent statistical properties for describing temperature-dependent 
+developmental rates of insects and mites. \emph{Ann. Entomol. Soc. Am.} 110, 302\eqn{-}309. \doi{10.1093/aesa/saw098}
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
+Peijian Shi \email{pjshi@njfu.edu.cn}, Peter M. Ridland \email{p.ridland@unimelb.edu.au}, 
+David A. Ratkowsky \email{d.ratkowsky@utas.edu.au}, Yang Li \email{yangli@fau.edu}.
 }
 \note{The calculation precision of curvature mainly depends on the setting of \code{method.args}. 
 The two important default values in the list of \code{method.args} are \code{d = 0.11}, and \code{r = 6}.
@@ -88,7 +92,7 @@ res2
 #   Ratkowsky, D.A. and Reddy, G.V.P. (2017) Empirical model with excellent statistical 
 #       properties for describing temperature-dependent developmental rates of insects  
 #       and mites. Ann. Entomol. Soc. Am. 110, 302-309.
-#   Wu, K.-J., Gong, P.-Y. and Ruan, Y.-M. (2009) Estimating developmental rates of 
+#   Wu, K., Gong, P. and Ruan, Y. (2009) Estimating developmental rates of 
 #       Helicoverpa armigera (Lepidoptera: Noctuidae) pupae at constant and
 #       alternating temperature by nonlinear models. Acta Entomol. Sin. 52, 640-650.
 
@@ -130,23 +134,22 @@ resu2
 
 
 #### Example 3 ###################################################################################
-# Height growth data of four species of bamboos (Gramineae: Bambusoideae)
+# Height growth data of four species of bamboo (Gramineae: Bambusoideae)
 # Reference(s):
-# Shi, P.-J., Fan, M.-L., Ratkowsky, D.A., Huang, J.-G., Wu, H.-I, Chen, L., Fang, S.-Y. and  
-#     Zhang, C.-X. (2017) Comparison of two ontogenetic growth equations for animals and plants. 
+# Shi, P., Fan, M., Ratkowsky, D.A., Huang, J., Wu, H., Chen, L., Fang, S. and  
+#     Zhang, C. (2017) Comparison of two ontogenetic growth equations for animals and plants. 
 #     Ecol. Model. 349, 1-10.
 
 data(shoots)
-attach(shoots)
 # Choose a species
 # 1: Phyllostachys iridescens; 2: Phyllostachys mannii; 
-# 3: Sinobambusa tootsik; 4: Pleioblastus maculatus
-# 'x3' is the vector of the observation times (in d) from a specific starting time of growth
+# 3: Pleioblastus maculatus; 4: Sinobambusa tootsik. 
+# 'x3' is the vector of the investigation times (in d) from a specific starting time of growth
 # 'y3' is the vector of the aboveground height values (in cm) of bamboo shoots at 'x3' 
 
-ind <- 3
-x3  <- time[code == ind]
-y3  <- height[code == ind] 
+ind <- 4
+x3  <- shoots$x[shoots$Code == ind]
+y3  <- shoots$y[shoots$Code == ind] 
 
 # Define the beta sigmoid model (bsm)
 bsm <- function(P, x){

@@ -16,8 +16,8 @@ fitIPEC( expr, x, y, ini.val, target.fun = "RSS", control = list(),
   \item{x}{Vector or matrix of observations of independent variable(s)}
   \item{y}{Vector of observations of response variable}
   \item{ini.val}{A vector or list of initial values of model parameters}
-  \item{target.fun}{Objective function, \dQuote{RSS} 
-and \dQuote{chi.sq}, for the optimization}
+  \item{target.fun}{The objective function, \dQuote{RSS} 
+or \dQuote{MRE}, for the optimization}
   \item{control}{A list of control parameters for using 
 the \code{\link{optim}} function in package \pkg{stats}}
   \item{fig.opt}{An option to determine whether to draw the fitted curve}
@@ -41,22 +41,30 @@ e.g. \code{y = beta0 + beta1 * x + beta2 * x^2},
 
 \code{ini.val = list(beta0=seq(5, 15, len=2), beta1=seq(0.1, 1, len=9), 
 beta2=seq(0.01, 0.05, len=5))}, which is similar to the usage of the 
-input argument of \code{start} of \code{\link{nls}} in package \pkg{stats}.
+input argument of \code{start} of \code{\link{nls}} in package \pkg{stats}. 
+
+In the \code{target.fun} argument option, RSS represents the residual sum of squares 
+between the observed and predicted \eqn{y} values, i.e. 
+\deqn{\mbox{RSS} = \sum_{i=1}^{N}\left(y_i-\hat{y}_i\right)^{2}}
+where \eqn{y_i} and \eqn{\hat{y}_i} represent the observed and predicted \eqn{y} values, respectively; 
+and \eqn{N} represents the sample size. MRE represents the mean relative error  between the observed and predicted \eqn{y} values, i.e. 
+\deqn{\mbox{MRE} = \frac{\sum_{i=1}^{N}\left|\frac{y_i-\hat{y}_i}{\hat{y}_i}\right|}{N}}
 }
 \value{
   \item{expr}{The formula used}
   \item{par}{Vector of estimates of parameters}
   \item{RSS}{Calculated residual sum of squares}
-  \item{chi.sq}{Calculated \eqn{\chi^2}}
+  \item{MRE}{Calculated mean relative error}
   \item{R.sq}{Calculated \eqn{R^2}}
   \item{n}{The number of data points, namely the sample size}
 }
 \references{
-Nelder, J.A. and Mead, R. (1965) A simplex algorithm for function minimization. 
-\emph{Comput. J.} 7, 308-313.
+Nelder, J.A. and Mead, R. (1965) A simplex method for function minimization. 
+\emph{Comput. J.} 7, 308\eqn{-}313. \doi{10.1093/comjnl/7.4.308}
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
+Peijian Shi \email{pjshi@njfu.edu.cn}, Peter M. Ridland \email{p.ridland@unimelb.edu.au}, 
+David A. Ratkowsky \email{d.ratkowsky@utas.edu.au}, Yang Li \email{yangli@fau.edu}.
 }
 \note{
 This function can be applicable to a nonlinear parametric model with 
@@ -64,7 +72,7 @@ a single independent variable or with multiple independent variables.
 
 \code{R.sq} is only used to help users intuitively judge whether the fitted curve seriously 
 deviates from the actual observations. However, it should NOT be used to decide which of 
-several competing models is the most appropriate (Pages 44-45 in Ratkowsky 1990). 
+several competing models is the most appropriate (Pages 44\eqn{-}45 in Ratkowsky 1990). 
 \code{RSS} and curvatures are among the suitable candidates to answer such a question.
 }
 \seealso{
@@ -108,7 +116,7 @@ graphics.off()
 #   Ratkowsky, D.A. and Reddy, G.V.P. (2017) Empirical model with excellent statistical 
 #       properties for describing temperature-dependent developmental rates of insects  
 #       and mites. Ann. Entomol. Soc. Am. 110, 302-309.
-#   Wu, K.-J., Gong, P.-Y. and Ruan, Y.-M. (2009) Estimating developmental rates of 
+#   Wu, K., Gong, P. and Ruan, Y. (2009) Estimating developmental rates of 
 #       Helicoverpa armigera (Lepidoptera: Noctuidae) pupae at constant and
 #       alternating temperature by nonlinear models. Acta Entomol. Sin. 52, 640-650.
 
@@ -156,22 +164,21 @@ resu0
 
 #### Example 3 ###################################################################################
 graphics.off()
-# Height growth data of four species of bamboos (Gramineae: Bambusoideae)
+# Height growth data of four species of bamboo (Gramineae: Bambusoideae)
 # Reference(s):
-# Shi, P.-J., Fan, M.-L., Ratkowsky, D.A., Huang, J.-G., Wu, H.-I, Chen, L.,   
-#     Fang, S.-Y. and Zhang, C.-X. (2017) Comparison of two ontogenetic  
+# Shi, P., Fan, M., Ratkowsky, D.A., Huang, J., Wu, H., Chen, L.,   
+#     Fang, S. and Zhang, C. (2017) Comparison of two ontogenetic  
 #     growth equations for animals and plants. Ecol. Model. 349, 1-10.
 
 data(shoots)
-attach(shoots)
 # Choose a species
 # 1: Phyllostachys iridescens; 2: Phyllostachys mannii; 
-# 3: Sinobambusa tootsik; 4: Pleioblastus maculatus
-# 'x3' is the vector of the observation times from a specific starting time of growth
+# 3: Pleioblastus maculatus; 4: Sinobambusa tootsik
+# 'x3' is the vector of the investigation times from a specific starting time of growth
 # 'y3' is the vector of the aboveground height values of bamboo shoots at 'x3' 
-ind <- 2
-x3  <- time[code == ind]
-y3  <- height[code == ind] 
+ind <- 4
+x3  <- shoots$x[shoots$Code == ind]
+y3  <- shoots$y[shoots$Code == ind] 
 
 # Define the beta sigmoid model (bsm)
 bsm <- function(P, x){

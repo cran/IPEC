@@ -9,8 +9,8 @@ function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE,
 
   object.fun <- function(P){
     y.theor <- expr(P, x)
-    if(target.fun == "chi.sq"){
-        temp <- abs( sum( (y-y.theor)^2/y.theor ) )
+    if(target.fun == "MRE"){
+        temp <- sum( abs((y-y.theor)/y.theor) ) / length(y)
     }
     if(target.fun == "RSS"){
         temp <- sum((y-y.theor)^2)
@@ -39,12 +39,11 @@ function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE,
   par    <- as.vector( mat[ind, 1:p] )        
   yhat   <- expr(par, x)
   RSS    <- sum((yhat - y)^2)
-  chi.sq <- abs( sum( (yhat - y)^2/yhat ) )
+  MRE    <- sum( abs((yhat - y)/yhat) ) / length(y)
   R.sq   <- 1 - sum((yhat-y)^2)/sum((y-mean(y))^2)
 
   if( (fig.opt=="TRUE" | fig.opt=="T" | fig.opt=="True") & ncol(x) == 1 ){ 
     dev.new()
-    par(mar=c(5,5,2,2))
     if( is.null(xlim) ){
         xmin  <- min(x)[1]
         xmax  <- max(x)[1]
@@ -84,8 +83,6 @@ function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE,
 
   if( (fig.opt=="TRUE" | fig.opt=="T" | fig.opt=="True") & ncol(x) > 1 ){ 
     dev.new()
-    par(mar=c(5,5,2,2))
-
     if( is.null(xlim) ){
       x.int <- (max(y)[1] - min(y)[1])/8
       xlim  <- c(min(y)[1] - x.int, max(y)[1] + x.int)
@@ -120,6 +117,6 @@ function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE,
     points(y, yhat, pch=1, cex=1.5, col=2)
   }
 
-  list(expr=expr, mat=mat, par=par, RSS=RSS, chi.sq=chi.sq, R.sq=R.sq, n=length(y))
+  list(expr=expr, mat=mat, par=par, RSS=RSS, MRE=MRE, R.sq=R.sq, n=length(y))
 
 }

@@ -30,14 +30,15 @@ or a combination of different values of multiple independent variables.
   \item{Hessian}{The Hessian matrix of parameters at \code{z}}
 }
 \references{
-Bates, D.M and Watts, D.G. (1988) \emph{Nonlinear Regression Analysis and its Applications}. Wiley, New York.
+Bates, D.M and Watts, D.G. (1988) \emph{Nonlinear Regression Analysis and its Applications}. Wiley, New York. \doi{10.1002/9780470316757}
 
 Ratkowsky, D.A. (1983) \emph{Nonlinear Regression Modeling: A Unified Practical Approach}. Marcel Dekker, New York.
 
 Ratkowsky, D.A. (1990) \emph{Handbook of Nonlinear Regression Models}, Marcel Dekker, New York.
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
+Peijian Shi \email{pjshi@njfu.edu.cn}, Peter M. Ridland \email{p.ridland@unimelb.edu.au}, 
+David A. Ratkowsky \email{d.ratkowsky@utas.edu.au}, Yang Li \email{yangli@fau.edu}.
 }
 \seealso{
 \code{\link{biasIPEC}}, \code{\link{skewIPEC}}, \code{\link{curvIPEC}}, 

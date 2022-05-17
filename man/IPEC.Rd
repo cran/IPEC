@@ -5,7 +5,9 @@
 Root Mean Square Curvature Calculation
 }
 \description{
-Calculates the RMS intrinsic and parameter-effects curvatures of a nonlinear regression model.
+Calculates the RMS intrinsic and parameter-effects curvatures of a nonlinear regression model. 
+The curvatures are global measures of assessing whether a model/data set combination 
+is close-to-linear or not. See Bates and Watts (1980) and Ratkowsky and Reddy (2017) for details. 
 }
 \details{
 
@@ -19,16 +21,19 @@ We are deeply thankful to Drs. Paul Gilbert and Jinlong Zhang for their invaluab
 during creating this package.
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
+Peijian Shi [aut, cre], Peter Ridland [aut], David A. Ratkowsky [aut], Yang Li [aut]
 
-Maintainer: Peijian Shi <peijianshi@gmail.com>
+Maintainer: Peijian Shi <pjshi@njfu.edu.cn>
 }
 \references{
-Bates, D.M and Watts, D.G. (1988) \emph{Nonlinear Regression Analysis and its Applications}. Wiley, New York.
+Bates, D.M and Watts, D.G. (1988) \emph{Nonlinear Regression Analysis and its Applications}. Wiley, New York. \doi{10.1002/9780470316757}
 
 Ratkowsky, D.A. (1983) \emph{Nonlinear Regression Modeling: A Unified Practical Approach}. Marcel Dekker, New York.
 
 Ratkowsky, D.A. (1990) \emph{Handbook of Nonlinear Regression Models}, Marcel Dekker, New York.
+
+Ratkowsky, D.A. & Reddy, G.V.P. (2017) Empirical model with excellent statistical properties for describing temperature-dependent 
+developmental rates of insects and mites. \emph{Ann. Entomol. Soc. Am.} 110, 302\eqn{-}309. \doi{10.1093/aesa/saw098}
 }
 
 \keyword{ package }
@@ -68,11 +73,13 @@ res2
 res3 <- biasIPEC(MM, theta=par1, x=x1, y=y1, tol= 1e-20)
 res3
 
-\dontrun{
+\donttest{
+  set.seed(123)  
   res4 <- bootIPEC( MM, x=x1, y=y1, ini.val=par1, target.fun = "RSS", 
                     control=list(reltol=1e-20, maxit=40000), 
-                    nboot=2000, CI=0.95, fig.opt=TRUE, seed=123 )
+                    nboot=2000, CI=0.95, fig.opt=TRUE )
   res4
+  set.seed(NULL)
 }
 
 # To calculate skewness
@@ -81,7 +88,7 @@ res5
 #################################################################################################
 
 
-\dontrun{
+\donttest{
 #### Example 2 ##################################################################################
 graphics.off()
 # Development data of female pupae of cotton bollworm (Wu et al. 2009)
@@ -89,7 +96,7 @@ graphics.off()
 #   Ratkowsky, D.A. and Reddy, G.V.P. (2017) Empirical model with excellent statistical 
 #       properties for describing temperature-dependent developmental rates of insects  
 #       and mites. Ann. Entomol. Soc. Am. 110, 302-309.
-#   Wu, K.-J., Gong, P.-Y. and Ruan, Y.-M. (2009) Estimating developmental rates of 
+#   Wu, K., Gong, P. and Ruan, Y. (2009) Estimating developmental rates of 
 #       Helicoverpa armigera (Lepidoptera: Noctuidae) pupae at constant and
 #       alternating temperature by nonlinear models. Acta Entomol. Sin. 52, 640-650.
 
@@ -145,9 +152,11 @@ resu2
 resu3 <- biasIPEC(myfun, theta=par2, x=x2, y=y2, tol= 1e-20)
 resu3
 
+set.seed(123)
 resu4 <- bootIPEC( myfun, x=x2, y=y2, ini.val=ini.val1, target.fun = "RSS", 
-                   nboot=2000, CI=0.95, fig.opt=TRUE, seed=123 )
+                   nboot=2000, CI=0.95, fig.opt=TRUE )
 resu4
+set.seed(NULL)
 
 # To calculate skewness
 resu5 <- skewIPEC(myfun, theta=par2, x=x2, y=y2, tol= 1e-20)
@@ -158,23 +167,22 @@ resu5
 
 #### Example 3 ##################################################################################
 graphics.off()
-# Height growth data of four species of bamboos (Gramineae: Bambusoideae)
+# Height growth data of four species of bamboo (Gramineae: Bambusoideae)
 # Reference(s):
-# Shi, P.-J., Fan, M.-L., Ratkowsky, R.A., Huang, J.-G., Wu, H.-I, Chen, L., Fang, S.-Y. and 
-#     Zhang, C.-X. (2017) Comparison of two ontogenetic growth equations for animals and plants. 
+# Shi, P., Fan, M., Ratkowsky, D.A., Huang, J., Wu, H., Chen, L., Fang, S. and 
+#     Zhang, C. (2017) Comparison of two ontogenetic growth equations for animals and plants. 
 #     Ecol. Model. 349, 1-10.
 
 data(shoots)
-attach(shoots)
 # Choose a species
 # 1: Phyllostachys iridescens; 2: Phyllostachys mannii; 
-# 3: Sinobambusa tootsik; 4: Pleioblastus maculatus
-# 'x3' is the vector of the observation times from a specific starting time of growth
+# 3: Pleioblastus maculatus; 4: Sinobambusa tootsik.
+# 'x3' is the vector of the investigation times from a specific starting time of growth
 # 'y3' is the vector of the aboveground height values of bamboo shoots at 'x3' 
 
-ind <- 3
-x3  <- time[code == ind]
-y3  <- height[code == ind] 
+ind <- 4
+x3  <- shoots$x[shoots$Code == ind]
+y3  <- shoots$y[shoots$Code == ind] 
 
 # Define the beta sigmoid model (bsm)
 bsm <- function(P, x){
@@ -234,7 +242,7 @@ re2
 re3 <- biasIPEC( bsm, theta=par3, x=x3, y=y3, tol= 1e-20 )
 re3
 
-\dontrun{
+\donttest{
   re4 <- bootIPEC( bsm, x=x3, y=y3, ini.val=ini.val2, target.fun = "RSS", 
                    control=list(trace=FALSE, reltol=1e-20, maxit=50000),
                    nboot=2000, CI=0.95, fig.opt=TRUE, fold=3.5, seed=123 )
@@ -267,11 +275,13 @@ RESU2
 RESU3 <- biasIPEC( simp.bsm, theta=par7, x=x3, y=y3, tol= 1e-20 )
 RESU3
 
-\dontrun{
+\donttest{
+  set.seed(123)
   RESU4 <- bootIPEC( simp.bsm, x=x3, y=y3, ini.val=ini.val7, target.fun = "RSS", 
                      control=list(trace=FALSE, reltol=1e-20, maxit=50000),
-                     nboot=2000, CI=0.95, fig.opt=TRUE, fold=3.5, seed=123 )
+                     nboot=2000, CI=0.95, fig.opt=TRUE, fold=3.5 )
   RESU4
+  set.seed(NULL)
 }
 
 RESU5 <- skewIPEC( simp.bsm, theta=par7, x=x3, y=y3, tol= 1e-20 )
@@ -319,11 +329,13 @@ cons2
 cons3    <- biasIPEC( isom.fun, theta=par8, x=X, y=Y, tol= 1e-20 )
 cons3
 
-\dontrun{
+\donttest{
+  set.seed(123)
   cons4 <- bootIPEC( isom.fun, x=X, y=Y, ini.val=ini.val8, target.fun = "RSS", 
                      control=list(trace=FALSE, reltol=1e-20, maxit=50000),
-                     nboot=2000, CI=0.95, fig.opt=TRUE, fold=10000, seed=123 )
+                     nboot=2000, CI=0.95, fig.opt=TRUE, fold=10000 )
   cons4
+  set.seed(NULL)
 }
 
 cons5    <- skewIPEC( isom.fun, theta=par8, x=X, y=Y, tol= 1e-20 )

@@ -37,12 +37,13 @@ the skewness is very apparent; if \eqn{|g_{1i}| >}{|g[1i]| >} \bold{1}, the esti
 }
 \references{
 Hougaard, P. (1985) The appropriateness of the asymptotic distribution in a nonlinear regression model in relation to curvature. 
-\emph{J. R. Statist. Soc., Ser. B} 47, 103-114.
+\emph{J. R. Statist. Soc., Ser. B} 47, 103\eqn{-}114.
 
 Ratkowsky, D.A. (1990) \emph{Handbook of Nonlinear Regression Models}, Marcel Dekker, New York.
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
+Peijian Shi \email{pjshi@njfu.edu.cn}, Peter M. Ridland \email{p.ridland@unimelb.edu.au}, 
+David A. Ratkowsky \email{d.ratkowsky@utas.edu.au}, Yang Li \email{yangli@fau.edu}.
 }
 \note{
 The current function can be applicable to nonlinear models with multiple independent variables.
@@ -75,7 +76,7 @@ res5
 #   Ratkowsky, D.A. and Reddy, G.V.P. (2017) Empirical model with excellent statistical 
 #       properties for describing temperature-dependent developmental rates of insects  
 #       and mites. Ann. Entomol. Soc. Am. 110, 302-309.
-#   Wu, K.-J., Gong, P.-Y. and Ruan, Y.-M. (2009) Estimating developmental rates of 
+#   Wu, K., Gong, P. and Ruan, Y. (2009) Estimating developmental rates of 
 #       Helicoverpa armigera (Lepidoptera: Noctuidae) pupae at constant and
 #       alternating temperature by nonlinear models. Acta Entomol. Sin. 52, 640-650.
 

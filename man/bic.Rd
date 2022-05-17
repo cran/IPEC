@@ -29,10 +29,11 @@ and there is a vector of BIC values corresponding to the multiple objects.
 \references{
 Spiess, A-N and Neumeyer, N. (2010) An evaluation of R squared as an inadequate measure 
 for nonlinear models in pharmacological and biochemical research: a Monte Carlo approach. 
-\emph{BMC Pharmacol.} 10, 6. doi: 10.1186/1471-2210-10-6
+\emph{BMC Pharmacol.} 10, 6. \doi{10.1186/1471-2210-10-6}
 }
 \author{
-Peijian Shi, Peter Ridland, David A. Ratkowsky, Yang Li
+Peijian Shi \email{pjshi@njfu.edu.cn}, Peter M. Ridland \email{p.ridland@unimelb.edu.au}, 
+David A. Ratkowsky \email{d.ratkowsky@utas.edu.au}, Yang Li \email{yangli@fau.edu}.
 }
 \note{
 The BIC gives a higher penalty on the number of model parameters than the AIC.
@@ -79,7 +80,7 @@ twopar <- function(theta, x){
     a*x^b
 }
 
-\dontrun{
+\donttest{
   A1 <- fitIPEC(propor, x=cbind(L, W), y=A, fig.opt=FALSE,
             ini.val=list(seq(0.1, 1.5, by=0.1)))
   B1 <- curvIPEC(propor, theta=A1$par, x=cbind(L, W), y=A)    
