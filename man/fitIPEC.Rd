@@ -8,16 +8,17 @@ Estimates the parameters of a given parametric model
 using the \code{\link{optim}} function in package \pkg{stats}.
 }
 \usage{
-fitIPEC( expr, x, y, ini.val, target.fun = "RSS", control = list(), 
+fitIPEC( expr, x, y, ini.val, weights = NULL, control = list(), 
          fig.opt = TRUE, xlim = NULL, ylim = NULL, xlab = NULL, ylab = NULL )
 }
 \arguments{
   \item{expr}{A given parametric model}
-  \item{x}{Vector or matrix of observations of independent variable(s)}
-  \item{y}{Vector of observations of response variable}
+  \item{x}{A vector or matrix of observations of independent variable(s)}
+  \item{y}{A vector of observations of response variable}
   \item{ini.val}{A vector or list of initial values of model parameters}
-  \item{target.fun}{The objective function, \dQuote{RSS} 
-or \dQuote{MRE}, for the optimization}
+  \item{weights}{An optional vector of weights to be used in the fitting process. 
+\code{weights} should be NULL or a numeric vector. If non-NULL, weighted least squares is used with weights \code{weights}; 
+otherwise ordinary least squares is used.}
   \item{control}{A list of control parameters for using 
 the \code{\link{optim}} function in package \pkg{stats}}
   \item{fig.opt}{An option to determine whether to draw the fitted curve}
@@ -43,19 +44,22 @@ e.g. \code{y = beta0 + beta1 * x + beta2 * x^2},
 beta2=seq(0.01, 0.05, len=5))}, which is similar to the usage of the 
 input argument of \code{start} of \code{\link{nls}} in package \pkg{stats}. 
 
-In the \code{target.fun} argument option, RSS represents the residual sum of squares 
-between the observed and predicted \eqn{y} values, i.e. 
-\deqn{\mbox{RSS} = \sum_{i=1}^{N}\left(y_i-\hat{y}_i\right)^{2}}
+In the \code{weights} argument option, the default is \code{weights = NULL}. 
+In that case, ordinary least squares is used. 
+The residual sum of squares (RSS) between the observed and predicted \eqn{y} values 
+is minimized to estimate a model's parameters, i.e., 
+\deqn{\mbox{RSS} = \sum_{i=1}^{n}\left(y_i-\hat{y}_i\right)^{2}}
 where \eqn{y_i} and \eqn{\hat{y}_i} represent the observed and predicted \eqn{y} values, respectively; 
-and \eqn{N} represents the sample size. MRE represents the mean relative error  between the observed and predicted \eqn{y} values, i.e. 
-\deqn{\mbox{MRE} = \frac{\sum_{i=1}^{N}\left|\frac{y_i-\hat{y}_i}{\hat{y}_i}\right|}{N}}
+and \eqn{n} represents the sample size. If \code{weights} is a numeric vector, 
+the weighted residual sum of squares is minimized, i.e.,   
+\deqn{\mbox{RSS} = \sum_{i=1}^{n}w_i\left(y_i-\hat{y}_i\right)^{2}} 
+where \eqn{w_i} is the \eqn{i} elements of \code{weights}.
 }
 \value{
   \item{expr}{The formula used}
-  \item{par}{Vector of estimates of parameters}
-  \item{RSS}{Calculated residual sum of squares}
-  \item{MRE}{Calculated mean relative error}
-  \item{R.sq}{Calculated \eqn{R^2}}
+  \item{par}{The vector of estimates of parameters}
+  \item{RSS}{The residual sum of squares or the weighted residual sum of squares}
+  \item{R.sq}{The coefficient of determination or the weighted coefficient of determination}
   \item{n}{The number of data points, namely the sample size}
 }
 \references{
@@ -108,7 +112,6 @@ param1
 ##################################################################################################
 
 
-\dontrun{
 #### Example 2 ###################################################################################
 graphics.off()
 # Development data of female pupae of cotton bollworm (Wu et al. 2009)
@@ -144,8 +147,13 @@ sqrt.LRF <- function(P, x){
     return(z)
   }
   x <- fun0(x)
-  sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
-      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )
+  if (Tmin >= Tmax | ropt <= 0 | Topt <= Tmin | Topt >= Tmax) 
+    temp <- Inf
+  if (Tmax > Tmin & ropt > 0 & Topt > Tmin & Topt < Tmax){
+    temp <- sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
+      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )  
+  }
+  return( temp )
 }
 
 myfun <- sqrt.LRF
@@ -154,12 +162,11 @@ ylab1 <- expression( paste("Developmental rate"^{1/2},
                      " (", d^{"-1"}, ")", sep="") )
 resu0 <- fitIPEC( myfun, x=x2, y=y2, ini.val=ini.val1, xlim=NULL, 
                   ylim=NULL, xlab=xlab1, ylab=ylab1, fig.opt=TRUE, 
-				  control=list(trace=FALSE, reltol=1e-20, maxit=50000) )
+	          control=list(trace=FALSE, reltol=1e-20, maxit=50000) )
 par2  <- resu0$par
 par2
 resu0
 ##################################################################################################
-}
 
 
 #### Example 3 ###################################################################################

@@ -75,7 +75,7 @@ res3
 
 \donttest{
   set.seed(123)  
-  res4 <- bootIPEC( MM, x=x1, y=y1, ini.val=par1, target.fun = "RSS", 
+  res4 <- bootIPEC( MM, x=x1, y=y1, ini.val=par1,  
                     control=list(reltol=1e-20, maxit=40000), 
                     nboot=2000, CI=0.95, fig.opt=TRUE )
   res4
@@ -88,7 +88,6 @@ res5
 #################################################################################################
 
 
-\donttest{
 #### Example 2 ##################################################################################
 graphics.off()
 # Development data of female pupae of cotton bollworm (Wu et al. 2009)
@@ -124,8 +123,13 @@ sqrt.LRF <- function(P, x){
     return(z)
   }
   x <- fun0(x)
-  sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
-      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )
+  if (Tmin >= Tmax | ropt <= 0 | Topt <= Tmin | Topt >= Tmax) 
+    temp <- Inf
+  if (Tmax > Tmin & ropt > 0 & Topt > Tmin & Topt < Tmax){
+    temp <- sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
+      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )  
+  }
+  return( temp )
 }
 
 myfun <- sqrt.LRF
@@ -152,17 +156,18 @@ resu2
 resu3 <- biasIPEC(myfun, theta=par2, x=x2, y=y2, tol= 1e-20)
 resu3
 
-set.seed(123)
-resu4 <- bootIPEC( myfun, x=x2, y=y2, ini.val=ini.val1, target.fun = "RSS", 
-                   nboot=2000, CI=0.95, fig.opt=TRUE )
-resu4
-set.seed(NULL)
+\donttest{
+  set.seed(123)
+  resu4 <- bootIPEC( myfun, x=x2, y=y2, ini.val=ini.val1,  
+                     nboot=2000, CI=0.95, fig.opt=TRUE )
+  resu4
+  set.seed(NULL)
+}
 
 # To calculate skewness
 resu5 <- skewIPEC(myfun, theta=par2, x=x2, y=y2, tol= 1e-20)
 resu5
 #################################################################################################
-}
 
 
 #### Example 3 ##################################################################################
@@ -198,8 +203,9 @@ bsm <- function(P, x){
     return(x)
   }
   x <- tailor.fun(x)   
+
   ropt*(x-tmin)*(x-2*tmax+topt)/(topt+tmin-2*tmax)*(
-       (x-tmin)/(topt-tmin) )^((topt-tmin)/(tmax-topt))   
+    (x-tmin)/(topt-tmin) )^((topt-tmin)/(tmax-topt)) 
 }
 
 # Define the simplified beta sigmoid model (simp.bsm)
@@ -243,9 +249,9 @@ re3 <- biasIPEC( bsm, theta=par3, x=x3, y=y3, tol= 1e-20 )
 re3
 
 \donttest{
-  re4 <- bootIPEC( bsm, x=x3, y=y3, ini.val=ini.val2, target.fun = "RSS", 
+  re4 <- bootIPEC( bsm, x=x3, y=y3, ini.val=ini.val2,  
                    control=list(trace=FALSE, reltol=1e-20, maxit=50000),
-                   nboot=2000, CI=0.95, fig.opt=TRUE, fold=3.5, seed=123 )
+                   nboot=2000, CI=0.95, fig.opt=TRUE, fold=3.5 )
   re4
 }
 
@@ -277,7 +283,7 @@ RESU3
 
 \donttest{
   set.seed(123)
-  RESU4 <- bootIPEC( simp.bsm, x=x3, y=y3, ini.val=ini.val7, target.fun = "RSS", 
+  RESU4 <- bootIPEC( simp.bsm, x=x3, y=y3, ini.val=ini.val7,  
                      control=list(trace=FALSE, reltol=1e-20, maxit=50000),
                      nboot=2000, CI=0.95, fig.opt=TRUE, fold=3.5 )
   RESU4
@@ -331,7 +337,7 @@ cons3
 
 \donttest{
   set.seed(123)
-  cons4 <- bootIPEC( isom.fun, x=X, y=Y, ini.val=ini.val8, target.fun = "RSS", 
+  cons4 <- bootIPEC( isom.fun, x=X, y=Y, ini.val=ini.val8,  
                      control=list(trace=FALSE, reltol=1e-20, maxit=50000),
                      nboot=2000, CI=0.95, fig.opt=TRUE, fold=10000 )
   cons4

@@ -14,8 +14,8 @@ derivIPEC(expr, theta, z, method = "Richardson",
 }
 \arguments{
   \item{expr}{A given parametric model}
-  \item{theta}{Vector of parameters of the model}
-  \item{z}{Vector where the derivatives are calculated}
+  \item{theta}{A vector of parameters of the model}
+  \item{z}{A vector where the derivatives are calculated}
   \item{method}{It is the same as the input argument of \code{method} of the \code{\link[numDeriv]{hessian}} function in package \pkg{numDeriv}}
   \item{method.args}{It is the same as the input argument of \code{method.args} of the \code{\link[numDeriv]{hessian}} function in package \pkg{numDeriv}}
   \item{side}{It is the same as the input argument of \code{side} of the \code{\link[numDeriv]{jacobian}} function in package \pkg{numDeriv}}
@@ -73,8 +73,13 @@ sqrt.LRF <- function(P, x){
     return(z)
   }
   x <- fun0(x)
-  sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
-      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )
+  if (Tmin >= Tmax | ropt <= 0 | Topt <= Tmin | Topt >= Tmax) 
+    temp <- Inf
+  if (Tmax > Tmin & ropt > 0 & Topt > Tmin & Topt < Tmax){
+    temp <- sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
+      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )  
+  }
+  return( temp )
 }
 
 myfun <- sqrt.LRF

@@ -14,9 +14,9 @@ skewIPEC( expr, theta, x, y, tol = .Machine$double.eps, method = "Richardson",
 }
 \arguments{
   \item{expr}{A given parametric model}
-  \item{theta}{Vector of parameters of the model}
-  \item{x}{Vector or matrix of observations of independent variable(s)}
-  \item{y}{Vector of observations of response variable}
+  \item{theta}{A vector of parameters of the model}
+  \item{x}{A vector or matrix of observations of independent variable(s)}
+  \item{y}{A vector of observations of response variable}
   \item{tol}{The tolerance for detecting linear dependencies in the columns of a matrix for calculating its inverse. 
 See the input argument of \code{tol} of the \code{\link{solve}} function in package \pkg{base} }
   \item{method}{It is the same as the input argument of \code{method} of the \code{\link[numDeriv]{hessian}} function in package \pkg{numDeriv}}
@@ -33,7 +33,7 @@ if \bold{0.1} \eqn{\le}{<=} \eqn{|g_{1i}| <}{|g[1i]| <} \bold{0.25}, the estimat
 the skewness is very apparent; if \eqn{|g_{1i}| >}{|g[1i]| >} \bold{1}, the estimator is considerably nonlinear in behavior (Pages 27-28 in Ratkowsky 1990).
 }
 \value{
-  \item{skewness}{Calculated skewness}
+  \item{skewness}{The skewness}
 }
 \references{
 Hougaard, P. (1985) The appropriateness of the asymptotic distribution in a nonlinear regression model in relation to curvature. 
@@ -102,8 +102,13 @@ sqrt.LRF <- function(P, x){
     return(z)
   }
   x <- fun0(x)
-  sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
-      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )
+  if (Tmin >= Tmax | ropt <= 0 | Topt <= Tmin | Topt >= Tmax) 
+    temp <- Inf
+  if (Tmax > Tmin & ropt > 0 & Topt > Tmin & Topt < Tmax){
+    temp <- sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
+      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )  
+  }
+  return( temp )
 }
 
 myfun <- sqrt.LRF

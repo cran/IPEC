@@ -1,5 +1,5 @@
 fitIPEC <-
-function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE, 
+function( expr, x, y, ini.val, weights=NULL, control=list(), fig.opt=TRUE, 
               xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL ){
 
   x <- rbind( x )
@@ -7,13 +7,18 @@ function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE,
   if( min(dim(x))[1] == 1 )   x <- cbind( x )
   if( nrow(x) != length(y) )  x <- t(x)
 
+  if(!is.null(weights) && !is.numeric(weights)) 
+      stop("'weights' must be a numeric vector!")
+  if(!is.null(weights) && length(weights) != length(y))
+      stop("The length of 'weights' must be the same as that of 'y'!")
+
   object.fun <- function(P){
     y.theor <- expr(P, x)
-    if(target.fun == "MRE"){
-        temp <- sum( abs((y-y.theor)/y.theor) ) / length(y)
+    if(is.null(weights)){
+        temp <- sum( (y-y.theor)^2 )
     }
-    if(target.fun == "RSS"){
-        temp <- sum((y-y.theor)^2)
+    if(!is.null(weights)){
+        temp <- sum(weights*(y-y.theor)^2)
     }
     return(temp)
   }
@@ -34,16 +39,23 @@ function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE,
   for(k in 1:p){
     Names[k] <- paste("theta[", k, "]", sep="")
   }
-  colnames(mat) <- c(Names, target.fun)
+  colnames(mat) <- c(Names, "RSS")
   ind    <- which( mat[, p+1] == min(mat[, p+1])[1] )[1]
   par    <- as.vector( mat[ind, 1:p] )        
   yhat   <- expr(par, x)
-  RSS    <- sum((yhat - y)^2)
-  MRE    <- sum( abs((yhat - y)/yhat) ) / length(y)
-  R.sq   <- 1 - sum((yhat-y)^2)/sum((y-mean(y))^2)
+  if(is.null(weights)){
+    RSS    <- sum((yhat - y)^2)
+    R.sq   <- 1 - RSS/sum((y-mean(y))^2)
+  }
+  if(!is.null(weights)){
+    RSS    <- sum(weights*(yhat - y)^2)
+    R.sq   <- 1 - RSS/sum(weights*(y-mean(y))^2)
+  }
 
   if( (fig.opt=="TRUE" | fig.opt=="T" | fig.opt=="True") & ncol(x) == 1 ){ 
     dev.new()
+    par(family="serif")
+    par(mar=c(5,5,2,2))
     if( is.null(xlim) ){
         xmin  <- min(x)[1]
         xmax  <- max(x)[1]
@@ -83,6 +95,8 @@ function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE,
 
   if( (fig.opt=="TRUE" | fig.opt=="T" | fig.opt=="True") & ncol(x) > 1 ){ 
     dev.new()
+    par(family="serif")
+    par(mar=c(5,5,2,2))
     if( is.null(xlim) ){
       x.int <- (max(y)[1] - min(y)[1])/8
       xlim  <- c(min(y)[1] - x.int, max(y)[1] + x.int)
@@ -117,6 +131,6 @@ function( expr, x, y, ini.val, target.fun = "RSS", control=list(), fig.opt=TRUE,
     points(y, yhat, pch=1, cex=1.5, col=2)
   }
 
-  list(expr=expr, mat=mat, par=par, RSS=RSS, MRE=MRE, R.sq=R.sq, n=length(y))
+  list(expr=expr, mat=mat, par=par, RSS=RSS, R.sq=R.sq, n=length(y))
 
 }

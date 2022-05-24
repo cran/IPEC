@@ -14,9 +14,9 @@ biasIPEC(expr, theta, x, y, tol = .Machine$double.eps, method = "Richardson",
 }
 \arguments{
   \item{expr}{A given nonlinear regression model}
-  \item{theta}{Vector of parameters of the model}
-  \item{x}{Vector or matrix of observations of independent variable(s)}
-  \item{y}{Vector of observations of response variable}
+  \item{theta}{A vector of parameters of the model}
+  \item{x}{A vector or matrix of observations of independent variable(s)}
+  \item{y}{A vector of observations of response variable}
   \item{tol}{The tolerance for detecting linear dependencies in the columns of a matrix for calculating its inverse. 
 See the input argument of \code{tol} of the \code{\link{solve}} function in package \pkg{base} }
   \item{method}{It is the same as the input argument of \code{method} of the \code{\link[numDeriv]{hessian}} function in package \pkg{numDeriv}}
@@ -30,8 +30,8 @@ e.g. \code{myfun <- function(P, x)\{...\}}, where \code{P} represents the parame
 An absolute value of \code{percent.bias} (see below) in excess of \strong{1\%} appears to be a good rule of thumb for indicating nonlinear behavior (Ratkowsky 1983).
 }
 \value{
-  \item{bias}{Calculated bias}
-  \item{percent.bias}{Calculated percentage bias that is equal to \code{bias/estimate * 100\%}}
+  \item{bias}{The bias}
+  \item{percent.bias}{The percentage bias that is equal to \code{bias/estimate * 100\%}}
 }
 \references{
 Box, M.J. (1971) Bias in nonlinear estimation. \emph{J. R. Statist. Soc., Ser. B} 33, 171\eqn{-}201. 
@@ -100,8 +100,13 @@ sqrt.LRF <- function(P, x){
     return(z)
   }
   x <- fun0(x)
-  sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
-      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )
+  if (Tmin >= Tmax | ropt <= 0 | Topt <= Tmin | Topt >= Tmax) 
+    temp <- Inf
+  if (Tmax > Tmin & ropt > 0 & Topt > Tmin & Topt < Tmax){
+    temp <- sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
+      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )  
+  }
+  return( temp )
 }
 
 myfun <- sqrt.LRF

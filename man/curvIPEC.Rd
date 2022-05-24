@@ -15,9 +15,9 @@ curvIPEC(expr, theta, x, y, tol = 1e-16, alpha = 0.05, method = "Richardson",
 }
 \arguments{
   \item{expr}{A given parametric model}
-  \item{theta}{Vector of parameters of the model}
-  \item{x}{Vector or matrix of observations of independent variable(s)}
-  \item{y}{Vector of observations of response variable}
+  \item{theta}{A vector of parameters of the model}
+  \item{x}{A vector or matrix of observations of independent variable(s)}
+  \item{y}{A vector of observations of response variable}
   \item{tol}{The tolerance for detecting linear dependencies in the columns of a matrix in the QR decomposition. 
 See the input argument of \code{tol} of the \code{\link{qr}} function in package \pkg{base} }
   \item{alpha}{Parameter controlling the significance level for testing the significance of a curvature}
@@ -37,7 +37,7 @@ function in the current package, and it also can be obtained using the other non
 \value{
   \item{rms.ic}{The root mean square intrinsic curvature}
   \item{rms.pec}{The root mean square parameter-effects curvature}
-  \item{critical.c}{Critical curvature value}
+  \item{critical.c}{The critical curvature value}
 }
 \references{
 Bates, D.M and Watts, D.G. (1988) \emph{Nonlinear Regression Analysis and its Applications}. Wiley, New York. \doi{10.1002/9780470316757}
@@ -118,8 +118,13 @@ sqrt.LRF <- function(P, x){
     return(z)
   }
   x <- fun0(x)
-  sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
-      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )
+  if (Tmin >= Tmax | ropt <= 0 | Topt <= Tmin | Topt >= Tmax) 
+    temp <- Inf
+  if (Tmax > Tmin & ropt > 0 & Topt > Tmin & Topt < Tmax){
+    temp <- sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
+      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )  
+  }
+  return( temp )
 }
 
 myfun <- sqrt.LRF

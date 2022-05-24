@@ -7,27 +7,28 @@ covariance matrices and correlation matrices of parameters
 based on bootstrap replications.
 }
 \usage{
-bootIPEC( expr, x, y, ini.val, target.fun = "RSS", control = list(), 
+bootIPEC( expr, x, y, ini.val, weights = NULL, control = list(), 
           nboot = 200, CI = 0.95, fig.opt = TRUE, fold = 3.5, 
           unique.num = 2, prog.opt = TRUE )
 }
 \arguments{
   \item{expr}{A given parametric model}
-  \item{x}{Vector or matrix of observations of independent variable(s)}
-  \item{y}{Vector of observations of response variable}
+  \item{x}{A vector or matrix of observations of independent variable(s)}
+  \item{y}{A vector of observations of response variable}
   \item{ini.val}{A vector or list of initial values of model parameters}
-  \item{target.fun}{The objective function, \dQuote{RSS} or \dQuote{MRE}, 
-for the optimization}
+  \item{weights}{An optional vector of weights to be used in the fitting process. 
+\code{weights} should be NULL or a numeric vector. If non-NULL, weighted least squares is used with weights \code{weights}; 
+otherwise ordinary least squares is used.}
   \item{control}{A list of control parameters for using the \code{\link{optim}} 
 function in package \pkg{stats}}
   \item{nboot}{The number of bootstrap replications}
   \item{CI}{The confidence level(s) of the required interval(s)}
-  \item{fig.opt}{Option of drawing figures of the distributions of bootstrap values of 
+  \item{fig.opt}{An option of drawing figures of the distributions of bootstrap values of 
 parameters and figures of pairwise comparisons of bootstrap values}
-  \item{fold}{Parameter reducing the extreme bootstrap values of parameters}
+  \item{fold}{A parameter removing the extreme bootstrap values of parameters}
   \item{unique.num}{The least number of sampled non-overlapping data points 
 for carrying out a bootstrap nonlinear regression}
-  \item{prog.opt}{Option of showing the running progress of bootstrap}
+  \item{prog.opt}{An option of showing the running progress of bootstrap}
 }
 \details{
 \code{ini.val} can be a vector or a list that has saved initial values for model parameters, 
@@ -38,12 +39,16 @@ e.g. \code{y = beta0 + beta1 * x + beta2 * x^2},
 beta2=seq(0.01, 0.05, len=5))}, which is similar to the usage of the 
 input argument of \code{start} of \code{\link{nls}} in package \pkg{stats}. 
 
-In the \code{target.fun} argument option, RSS represents the residual sum of squares 
-between the observed and predicted \eqn{y} values, i.e. 
-\deqn{\mbox{RSS} = \sum_{i=1}^{N}\left(y_i-\hat{y}_i\right)^{2}}
+In the \code{weights} argument option, the default is \code{weights = NULL}. 
+In that case, ordinary least squares is used. 
+The residual sum of squares (RSS) between the observed and predicted \eqn{y} values 
+is minimized to estimate a model's parameters, i.e., 
+\deqn{\mbox{RSS} = \sum_{i=1}^{n}\left(y_i-\hat{y}_i\right)^{2}}
 where \eqn{y_i} and \eqn{\hat{y}_i} represent the observed and predicted \eqn{y} values, respectively; 
-and \eqn{N} represents the sample size. MRE represents the mean relative error  between the observed and predicted \eqn{y} values, i.e. 
-\deqn{\mbox{MRE} = \frac{\sum_{i=1}^{N}\left|\frac{y_i-\hat{y}_i}{\hat{y}_i}\right|}{N}}
+and \eqn{n} represents the sample size. If \code{weights} is a numeric vector, 
+the weighted residual sum of squares is minimized, i.e.,   
+\deqn{\mbox{RSS} = \sum_{i=1}^{n}w_i\left(y_i-\hat{y}_i\right)^{2}} 
+where \eqn{w_i} is the \eqn{i} elements of \code{weights}.
 
 \code{CI} determines the width of confidence intervals. 
 
@@ -110,7 +115,7 @@ MM <- function(theta, x){
 
 \donttest{
   set.seed(123)
-  res4 <- bootIPEC( MM, x=x1, y=y1, ini.val=c(200, 0.05), target.fun = "RSS", 
+  res4 <- bootIPEC( MM, x=x1, y=y1, ini.val=c(200, 0.05), 
                     control=list(reltol=1e-20, maxit=40000), nboot=2000, CI=0.95, 
                     fig.opt=TRUE )
   res4
@@ -153,14 +158,19 @@ sqrt.LRF <- function(P, x){
     return(z)
   }
   x <- fun0(x)
-  sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
-      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )
+  if (Tmin >= Tmax | ropt <= 0 | Topt <= Tmin | Topt >= Tmax) 
+    temp <- Inf
+  if (Tmax > Tmin & ropt > 0 & Topt > Tmin & Topt < Tmax){
+    temp <- sqrt( ropt*(x-Tmax)*(x-Tmin)^2/((Topt-Tmin)*((Topt-Tmin
+      )*(x-Topt)-(Topt-Tmax)*(Topt+Tmin-2*x))) )  
+  }
+  return( temp )
 }
 
 myfun <- sqrt.LRF
 \donttest{
   set.seed(123)
-  resu4 <- bootIPEC( myfun, x=x2, y=y2, ini.val=ini.val1, target.fun="RSS", 
+  resu4 <- bootIPEC( myfun, x=x2, y=y2, ini.val=ini.val1, 
                      nboot=2000, CI=0.95, fig.opt=TRUE )
   resu4
   set.seed(NULL)
@@ -228,7 +238,7 @@ ylab2    <- "Height (cm)"
 
 \donttest{
   set.seed(123)
-  re4 <- bootIPEC( bsm, x=x3, y=y3, ini.val=ini.val2, target.fun = "RSS", 
+  re4 <- bootIPEC( bsm, x=x3, y=y3, ini.val=ini.val2,    
                    control=list(trace=FALSE, reltol=1e-20, maxit=50000),
                    nboot=2000, CI=0.95, fig.opt=TRUE, fold=10 )
   re4
@@ -240,7 +250,7 @@ ini.val7 <- c(40, 30, 50)
 
 \donttest{
   set.seed(123)
-  RESU4 <- bootIPEC( simp.bsm, x=x3, y=y3, ini.val=ini.val7, target.fun = "RSS", 
+  RESU4 <- bootIPEC( simp.bsm, x=x3, y=y3, ini.val=ini.val7,   
                      control=list(trace=FALSE, reltol=1e-20, maxit=50000),
                      nboot=2000, CI=0.95, fig.opt=TRUE, fold=10 )
   RESU4
@@ -292,21 +302,21 @@ MitC <- function(P3, x, x1=1, x2=13){
 \donttest{
   set.seed(123)
   ini.val3 <- c(-0.1, 2.5, 1.0)
-  r4       <- bootIPEC( MitA, x=x4, y=y4, ini.val=ini.val3, target.fun="RSS", 
+  r4       <- bootIPEC( MitA, x=x4, y=y4, ini.val=ini.val3,    
                         nboot=2000, CI=0.95, fig.opt=TRUE )
   r4
 
   ini.val4 <- c(exp(-0.1), log(2.5), 1)
-  R4       <- bootIPEC( MitB, x=x4, y=y4, ini.val=ini.val4, target.fun="RSS", 
+  R4       <- bootIPEC( MitB, x=x4, y=y4, ini.val=ini.val4, 
                         nboot=2000, CI=0.95, fig.opt=TRUE )
   R4
 
   # ini.val6 <- c(-0.15, 2.52, 1.09)
   iv.list2 <- list(seq(-2, -0.05, len=5), seq(1, 4, len=8), seq(0.05, 3, by=0.5))
-  RES0 <- fitIPEC( MitC, x=x4, y=y4, ini.val=iv.list2, target.fun="RSS", 
+  RES0 <- fitIPEC( MitC, x=x4, y=y4, ini.val=iv.list2,    
                    control=list(trace=FALSE, reltol=1e-10, maxit=5000) )
   RES0$par
-  RES4 <- bootIPEC( MitC, x=x4, y=y4, ini.val=iv.list2, target.fun="RSS", 
+  RES4 <- bootIPEC( MitC, x=x4, y=y4, ini.val=iv.list2, 
                     control=list(trace=FALSE, reltol=1e-10, maxit=5000), 
                     nboot=5000, CI=0.95, fig.opt=TRUE, fold=3.5, unique.num=2 )
   RES4
