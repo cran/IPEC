@@ -1,4 +1,5 @@
-\name{IPEC}
+\name{IPEC-package}
+\alias{IPEC-package}
 \alias{IPEC}
 \docType{package}
 \title{
@@ -18,7 +19,8 @@ The DESCRIPTION file:
 }
 \note{
 We are deeply thankful to Drs. Paul Gilbert and Jinlong Zhang for their invaluable help 
-during creating this package.
+during creating this package. We also thank Dr. Kurt Hornik for his technical guidance in 
+updating the package.
 }
 \author{
 Peijian Shi [aut, cre], Peter Ridland [aut], David A. Ratkowsky [aut], Yang Li [aut]
