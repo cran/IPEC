@@ -7,7 +7,7 @@ Bias Calculation Function
 Calculates the bias in the estimates of the parameters of a given nonlinear regression model.
 }
 \usage{
-biasIPEC(expr, theta, x, y, tol = .Machine$double.eps, method = "Richardson", 
+biasIPEC(expr, theta, x, y, tol = 1e-16, method = "Richardson", 
          method.args = list(eps = 1e-04, d = 0.11, 
          zero.tol = sqrt(.Machine$double.eps/7e-07), r = 6, v = 2, 
          show.details = FALSE), side = NULL)

@@ -16,7 +16,8 @@ function( expr, theta, x, y, tol = 1e-16, alpha=0.05, method="Richardson",
   v1    <- matrix(NA, nrow=n, ncol=p)
   v2    <- array(NA, c(p, p, n))
   for(k in 1L:n){
-    resu      <- derivIPEC(expr, theta, x[k, ], method=method, method.args=method.args, side=side)
+    resu      <- derivIPEC(expr, theta, x[k, ], method=method, 
+                     method.args=method.args, side=side)
     v1[k,]    <- resu$Jacobian
     v2[, , k] <- resu$Hessian
   }  
