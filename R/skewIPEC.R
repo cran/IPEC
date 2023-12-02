@@ -1,4 +1,4 @@
-skewIPEC <- function( expr, theta, x, y, tol=.Machine$double.eps, method = "Richardson", 
+skewIPEC <- function( expr, theta, x, y, tol=sqrt(.Machine$double.eps), method = "Richardson", 
         method.args = list(eps = 1e-04, d = 0.11, zero.tol = sqrt(.Machine$double.eps/7e-07), 
         r = 6, v = 2, show.details = FALSE), side = NULL ) 
 {
@@ -21,7 +21,7 @@ skewIPEC <- function( expr, theta, x, y, tol=.Machine$double.eps, method = "Rich
   
     # L is a matrix with p rows and p columns
     L <- t(v1) %*% v1   
-    L <- solve(L, tol=tol)
+    L <- ginv(L, tol=tol)
 
     W <- array(NA, c(p, p, p))
     for (k1 in 1L:p) {

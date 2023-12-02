@@ -7,7 +7,7 @@ Skewness Calculation Function
 Calculates the skewness in the estimates of the parameters of a given model.
 }
 \usage{
-skewIPEC( expr, theta, x, y, tol = .Machine$double.eps, method = "Richardson", 
+skewIPEC( expr, theta, x, y, tol = sqrt(.Machine$double.eps), method = "Richardson", 
               method.args = list(eps = 1e-04, d = 0.11, 
               zero.tol = sqrt(.Machine$double.eps/7e-07), r = 6, v = 2, 
               show.details = FALSE), side = NULL )
@@ -18,7 +18,7 @@ skewIPEC( expr, theta, x, y, tol = .Machine$double.eps, method = "Richardson",
   \item{x}{A vector or matrix of observations of independent variable(s)}
   \item{y}{A vector of observations of response variable}
   \item{tol}{The tolerance for detecting linear dependencies in the columns of a matrix for calculating its inverse. 
-See the input argument of \code{tol} of the \code{\link{solve}} function in package \pkg{base} }
+See the input argument of \code{tol} of the \code{\link{ginv}} function in package \pkg{MASS} }
   \item{method}{It is the same as the input argument of \code{method} of the \code{\link[numDeriv]{hessian}} function in package \pkg{numDeriv}}
   \item{method.args}{It is the same as the input argument of \code{method.args} of the \code{\link[numDeriv]{hessian}} function in package \pkg{numDeriv}}
   \item{side}{It is the same as the input argument of \code{side} of the \code{\link[numDeriv]{jacobian}} function in package \pkg{numDeriv}}

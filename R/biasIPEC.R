@@ -44,7 +44,7 @@ biasIPEC <- function (expr, theta, x, y, tol = 1e-16, method = "Richardson",
         C[, , j] <- crossprod(Q1, a[, , j])
     }
     C     <- aperm(C, c(2, 3, 1))
-    r11i  <- solve(qr.R(qrd)[1L:p, 1L:p])
+    r11i  <- ginv(qr.R(qrd)[1L:p, 1L:p], tol=tol)
     sumaT <- c()
     for (j in 1L:p) {
         C[, , j] <- crossprod(r11i, C[, , j]) %*% r11i * sp 
