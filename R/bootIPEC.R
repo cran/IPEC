@@ -115,7 +115,7 @@ function( expr, x, y, ini.val, weights = NULL,
     Names[k] <- paste("theta[", k, "]", sep="")
   }
   rownames(perc.ci.mat) <- Names
-  colnames(perc.ci.mat) <- c("Estimate", "SD", "Median", "Mean", "perc LCI", "perc UCI")
+  colnames(perc.ci.mat) <- c("Estimate", "boot SE", "Median", "Mean", "perc LCI", "perc UCI")
   colnames(M)           <- c(Names, "RSS", "R.sq") 
 
   # Calculate the lower and upper limits of confidence intervals based on the BCa method
@@ -155,7 +155,7 @@ function( expr, x, y, ini.val, weights = NULL,
   bca.ci.mat[, 6] <- ci.adj[,2] 
 
   rownames(bca.ci.mat) <- Names
-  colnames(bca.ci.mat) <- c("Estimate", "SD", "Median", "Mean", "bca LCI", "bca UCI")
+  colnames(bca.ci.mat) <- c("Estimate", "boot SE", "Median", "Mean", "bca LCI", "bca UCI")
 
   if(nboot == 1){
       covar.mat <- NA; cor.mat <- NA

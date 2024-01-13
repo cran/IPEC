@@ -3,7 +3,12 @@ aic <- function( object, ... ){
   val0  <- c()
   for(i in 1:length(list0)){
     H    <- list0[[i]]
-    n    <- H$n
+    if( ("sample.size" %in% names(H)) & ("n" %in% names(H)) )
+        n <- H$sample.size
+    if( ("sample.size" %in% names(H)) & !("n" %in% names(H)) )
+        n <- H$sample.size
+    if( !("sample.size" %in% names(H)) & ("n" %in% names(H)) )
+        n <- H$n
     RSS  <- H$RSS
     p    <- length( H$par )
     temp <- 2*(p+1) + n*(log(2*pi)+1-log(n)+log(RSS))

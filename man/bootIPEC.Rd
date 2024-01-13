@@ -2,7 +2,7 @@
 \alias{bootIPEC}
 \title{Bootstrap Function for Nonlinear Regression}
 \description{
-Generates the density distributions, standard deviations, confidence intervals, 
+Generates the density distributions, standard errors, confidence intervals, 
 covariance matrices and correlation matrices of parameters 
 based on bootstrap replications.
 }
@@ -57,16 +57,16 @@ a certain \code{fold} of the difference between 3/4 and 1/4 quantiles of the
 bootstrap values of a model parameter. 
 
 The default of \code{unique.num} is 2. That is, at least two non-overlapping data 
-points randomly sampled from \code{(x,y)} are needed for carrying out 
+points randomly sampled from \eqn{\left(x, y\right)} are needed for carrying out 
 a bootstrap nonlinear regression.
 }
 \value{
   \item{M}{The matrix saving the fitted results of all \code{nboot} bootstrap 
 values of model parameters and goodness of fit}
-  \item{perc.ci.mat}{The matrix saving the estimate, standard deviation, median, mean, 
+  \item{perc.ci.mat}{The matrix saving the estimate, standard error, median, mean, 
 and the calculated lower and upper limits of confidence interval based on 
 the bootstrap percentile method}
-  \item{bca.ci.mat}{The matrix saving the estimate, standard deviation, median, mean, 
+  \item{bca.ci.mat}{The matrix saving the estimate, standard error, median, mean, 
 and the calculated lower and upper limits of confidence interval based on 
 the bootstrap \eqn{BC_a}{BC[a]} method}
   \item{covar.mat}{The covariance matrix of parameters based on the bootstrap 
@@ -87,13 +87,13 @@ David A. Ratkowsky \email{d.ratkowsky@utas.edu.au}, Yang Li \email{yangli@fau.ed
 }
 \note{
 To obtain reliable confidence intervals of model parameters, more than \strong{2000} 
-bootstrap replications are recommended; whereas to obtain a reliable standard deviation of the estimate 
+bootstrap replications are recommended; whereas to obtain a reliable standard error of the estimate 
 of a parameter, more than \strong{30} bootstrap replications are sufficient (Efron and Tibshirani 1993). 
 \code{bca.ci.mat} is recommended to show better confidence intervals of parameters than 
 those in \code{perc.ci.mat}. 
 
-The outputs of model parameters will all be represented by \eqn{\theta_i}{theta[i]}, \code{i} from 1 
-to \code{p}, where \code{p} represents the number of model parameters. The letters of model 
+The outputs of model parameters will all be represented by \eqn{\theta_i}{theta[i]}, \eqn{i} from 1 
+to \eqn{p}, where \eqn{p} represents the number of model parameters. The letters of model 
 parameters defined by users such as \eqn{\beta_i}{beta[i]} will be automatically replaced by \eqn{\theta_i}{theta[i]}.
 }
 \seealso{

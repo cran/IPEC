@@ -11,7 +11,7 @@ using the \code{\link{fitIPEC}} function.
 aic( object, ... )
 }
 \arguments{
-  \item{object}{A fitted model object for which there exists the sample size (\code{n}), 
+  \item{object}{A fitted model object for which there exists the sample size (\code{sample.size} or \code{n}), 
 estimate(s) of model parameter(s) (\code{par}), and residual sum of squares (\code{RSS})}
   \item{...}{Optionally more fitted model objects}
 }
@@ -36,6 +36,8 @@ Peijian Shi \email{pjshi@njfu.edu.cn}, Peter M. Ridland \email{p.ridland@unimelb
 David A. Ratkowsky \email{d.ratkowsky@utas.edu.au}, Yang Li \email{yangli@fau.edu}.
 }
 \note{
+When there are \code{sample.size} and \code{n} in \code{object} at the same time, the default of 
+the sample size is \code{sample.size}, which is superior to \code{n}. 
 With the sample size increasing, the number of model parameter(s) has a weaker 
 influence on the value of AIC assuming that ln(\code{RSS/n}) is a constant.
 }

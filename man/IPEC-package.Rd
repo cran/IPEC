@@ -18,9 +18,9 @@ The DESCRIPTION file:
 
 }
 \note{
-We are deeply thankful to Drs. Paul Gilbert and Jinlong Zhang for their invaluable help 
-during creating this package. We also thank Dr. Kurt Hornik for his technical guidance in 
-updating the package.
+We are deeply thankful to Paul Gilbert and Jinlong Zhang for their invaluable help 
+during creating this package. We also thank Linli Deng, Kurt Hornik and Lin Wang for 
+their statistical and technical guidance in updating the package.
 }
 \author{
 Peijian Shi [aut, cre], Peter Ridland [aut], David A. Ratkowsky [aut], Yang Li [aut]
